@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+      }
+    </script>
+    <style>
+    </style>
+    <title>Calculator</title> 
+  </head>
+  <body class="flex justify-center">
+    <div class="container flex flex-col bg-stone-50 h-180 w-90 rounded-4xl mt-10 border-[1px] border-slate-400 shadow-xl dark:bg-slate-900">
+      <div class="top">
+        <div class="flex justify-center">
+          <button id="darkModeToggle" class=" mt-4 text-xs px-3 py-1 bg-gray-200 rounded-md dark:bg-gray-600 text-black dark:text-white">Dark Mode</button>
+        </div>
+        <input type="text" id="display" class="w-80 h-55 bg-stone-50 text-7xl ml-5 my-5 dark:bg-slate-900 dark:text-white"></input>        
+      </div>
+      <div class="CalcButton grid grid-cols-4 gap-5 w-75 h-100 ml-7.5">
+        <button class="btn px-2 bg-slate-100 h-12 text-green-400 text-xl rounded-xl shadow-sm shadow-black dark:bg-gray-700" onclick="clearDisplay()">AC</button>
+        <button class="btn bg-slate-100 h-12 text-sky-400 text-xl rounded-xl shadow-sm shadow-black dark:bg-gray-700">(</button>
+        <button class="btn bg-slate-100 h-12 text-sky-400 text-xl rounded-xl shadow-sm shadow-black dark:bg-gray-700">)</button>
+        <button class="btnOptr bg-slate-100 h-12 text-rose-400 text-xl rounded-xl shadow-sm shadow-black dark:bg-gray-700"onclick="getOperator('*')">x</button>
+        <button class="btn bg-slate-100 h-12 text-sky-400 text-xl rounded-xl shadow-sm shadow-black dark:bg-gray-700" onclick="calcSquare()">&#8730</button>
+        <button class="btn bg-slate-100 h-12 text-sky-400 text-xl rounded-xl shadow-sm shadow-black dark:bg-gray-700" onclick="percent()">%</button>
+        <button class="btn bg-slate-100 h-12 text-sky-400 text-xl rounded-xl shadow-sm shadow-black dark:bg-gray-700" onclick="turnNeg()">+/-</button>
+        <button class="btnOptr bg-slate-100 h-12 text-rose-400 text-xl rounded-xl shadow-sm shadow-black dark:bg-gray-700"onclick="getOperator('/')" >&#xF7</button>
+        <button class="btn bg-slate-100 h-12 text-black text-xl rounded-xl shadow-sm shadow-black dark:bg-gray-700 dark:text-white" onclick="getNumber(7)">7</button>
+        <button class="btn bg-slate-100 h-12 text-black text-xl rounded-xl shadow-sm shadow-black dark:bg-gray-700 dark:text-white" onclick="getNumber(8)">8</button>
+        <button class="btn bg-slate-100 h-12 text-black text-xl rounded-xl shadow-sm shadow-black dark:bg-gray-700 dark:text-white" onclick="getNumber(9)">9</button>
+        <button class="btnOptr bg-slate-100 h-12 text-rose-400 text-xl rounded-xl shadow-sm shadow-black dark:bg-gray-700"onclick="getOperator('-')">-</button>
+        <button class="btn bg-slate-100 h-12 text-black text-xl rounded-xl shadow-sm shadow-black dark:bg-gray-700 dark:text-white" onclick="getNumber(4)">4</button>
+        <button class="btn bg-slate-100 h-12 text-black text-xl rounded-xl shadow-sm shadow-black dark:bg-gray-700 dark:text-white" onclick="getNumber(5)">5</button>
+        <button class="btn bg-slate-100 h-12 text-black text-xl rounded-xl shadow-sm shadow-black dark:bg-gray-700 dark:text-white" onclick="getNumber(6)">6</button>
+        <button class="btnOptr bg-slate-100 h-12 text-rose-400 text-xl rounded-xl shadow-sm shadow-black dark:bg-gray-700"onclick="getOperator('+')">+</button>
+        <button class="btn bg-slate-100 h-12 text-black text-xl rounded-xl shadow-sm shadow-black dark:bg-gray-700 dark:text-white" onclick="getNumber('1')">1</button>
+        <button class="btn bg-slate-100 h-12 text-black text-xl rounded-xl shadow-sm shadow-black dark:bg-gray-700 dark:text-white" onclick="getNumber(2)">2</button>
+        <button class="btn bg-slate-100 h-12 text-black text-xl rounded-xl shadow-sm shadow-black dark:bg-gray-700 dark:text-white" onclick= "getNumber(3)">3</button>
+        <button class="btnEqual row-span-2 border-[0.5px] text-white bg-rose-400 border-none rounded-xl text-xl shadow-sm shadow-black dark:bg-rose-400"onclick="calculateEquals()">=</button>
+        <button class="btn bg-slate-100 h-12 text-black text-xl rounded-xl shadow-sm shadow-black dark:bg-gray-700 dark:text-white" onclick="getDot('.')">.</button>
+        <button class="btn bg-slate-100 h-12 text-black text-xl rounded-xl shadow-sm shadow-black dark:bg-gray-700 dark:text-white" onclick="getNumber(0)">0</button>
+        <button class="btn bg-slate-100 h-12 text-green-400 text-xl rounded-xl shadow-sm shadow-black dark:bg-gray-700" onclick="clearChar()">C</button>
+      </div>
+    </div>
+    <script>
+      let firstNumber
+      let secondNumber
+      let step=0
+      numArray=[];
+      secondNumArray=[];
+      let operation
+      let result=0
+
+      let display=document.getElementById('display')
+
+      function getNumber(num){
+        if (step===0 || step===1){
+          numArray.push(num)
+          firstNumber=Number(numArray.join(''))
+          display.value=firstNumber
+        } else if (step===2){
+          secondNumArray.push(num)
+          secondNumber=Number(secondNumArray.join(''))
+          display.value=secondNumber
+        }
+      }
+      function getDot(value){
+        if (step===0 || step===1){
+          numArray.push(value)
+          firstNumber=Number(numArray.join(''))
+          display.value=firstNumber
+        } else if (step===2){
+          secondNumArray.push(value)
+          secondNumber=Number(secondNumArray.join(''))
+          display.value=secondNumber
+        }
+      }
+      function getOperator(op){
+        step=2
+        operation=op
+      }
+      function clearDisplay() {
+        display.value=0
+        firstNumber=null
+        secondNumber=null
+        step=0
+        operation=null
+        result=0
+        numArray=[]
+        secondNumArray=[]
+      }
+      function clearChar(){
+        display.value = display.value.slice(0,-1);
+      }
+      function calculateEquals(){
+        if (operation==='+'){
+          result=firstNumber+secondNumber
+          display.value=result
+        } else if (operation==='-'){
+          result=firstNumber-secondNumber
+          display.value=result 
+        } else if (operation==='*'){
+          result=(firstNumber*secondNumber)
+          display.value=result
+        } else if (operation==='/'){
+          result=firstNumber/secondNumber
+          display.value=result
+        }
+      }
+      function calcSquare() {
+        if (step<=1 && firstNumber!=null){
+          result=Math.sqrt(firstNumber)
+          display.value=result;
+        } else if (step===2 && secondNumber!=null)
+          result=Math.sqrt(secondNumber)
+          display.value=result;
+      }
+      function turnNeg() {
+        if (step<=1 && firstNumber!=null){
+          result=(firstNumber)*-1;
+          display.value=result;
+        } else if (step===2 && secondNumber!=null)
+          result=(secondNumber)*-1;
+          display.value=result;
+      }
+      function percent() {
+        if (step<=1 && firstNumber!=null){
+          result=(firstNumber)/100;
+          display.value=result;
+        } else if (step===2 && secondNumber!=null)
+          result=(secondNumber)/100;
+          display.value=result;
+      }
+    </script>     
+  </body>
+</html>
